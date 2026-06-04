@@ -12,3 +12,8 @@ debug.log
 timesfm-forecasting/
 v1/
 src/
+LICENSE
+tests/
+.github/
+.gitattributes
+AGENTS.md
