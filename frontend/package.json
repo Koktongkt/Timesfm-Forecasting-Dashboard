@@ -1,0 +1,27 @@
+{
+  "name": "timesfm-dashboard",
+  "version": "1.0.0",
+  "description": "TimesFM Forecasting Dashboard Frontend",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-plotly.js": "^2.0.1",
+    "plotly.js": "^2.26.0",
+    "axios": "^1.6.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-plotly.js": "^2.6.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
+}
