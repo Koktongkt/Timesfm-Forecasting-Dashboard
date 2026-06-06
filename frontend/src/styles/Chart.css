@@ -1,0 +1,51 @@
+/* Chart component styles */
+
+.chart-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-placeholder {
+  width: 100%;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 3rem;
+  text-align: center;
+  color: #64748b;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.chart-placeholder p {
+  margin: 0;
+}
+
+/* Plotly specific styles */
+.plotly {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+.plotly-graph-div {
+  background-color: white;
+  border-radius: 8px;
+}
+
+/* Hover info box */
+.hoverlayer {
+  pointer-events: none;
+}
+
+.hovertext {
+  font-size: 0.875rem;
+  background-color: rgba(30, 41, 59, 0.9);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+}

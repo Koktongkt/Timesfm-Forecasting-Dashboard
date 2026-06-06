@@ -1,6 +1,6 @@
 .github/
 .venv/
-src
+src_timesfm/
 __pycache__/
 uv.lock
 tests/

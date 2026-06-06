@@ -1,0 +1,55 @@
+/* FileUploader component styles */
+
+.file-uploader {
+  width: 100%;
+}
+
+.upload-area {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f9fafb;
+}
+
+.upload-area:hover {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+
+.upload-area.active {
+  border-color: #2563eb;
+  background-color: #dbeafe;
+  border-width: 2px;
+}
+
+.upload-area.loading {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.upload-area h3 {
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.upload-area p {
+  color: #64748b;
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.format-hint {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-top: 0.75rem;
+  font-style: italic;
+}
