@@ -58,5 +58,5 @@ Refer to Quick Start on how to use the app
 
 # Roadmap
 
-1. Create proper graph with the forecasted data with dynamic filters to filter for analysis
+1. Create proper graph with the forecasted data with dynamic filters to filter for analysis [Done]
 2. Incorporate with llm for chatbot analysis

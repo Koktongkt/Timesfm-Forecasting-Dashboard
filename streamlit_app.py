@@ -6,6 +6,7 @@ import numpy as np
 import json
 from datetime import datetime, timedelta
 from typing import Dict, Any
+import plotly.graph_objects as go
 
 from app.config import (
     DEFAULT_FORECAST_HORIZON,
@@ -147,7 +148,7 @@ def main():
                 with col3:
                     st.metric("Date Range", validation_result["date_range"])
 
-                st.dataframe(df.head(10), use_container_width=True)
+                st.dataframe(df.head(10), width='stretch')
 
             # Prepare data for inference
             data_dict, timestamps = DataHandler.prepare_for_inference(df)
@@ -158,7 +159,7 @@ def main():
                 if st.button(
                     "🚀 Generate Forecast",
                     type="primary",
-                    use_container_width=True,
+                    width='stretch',
                 ):
                     with st.spinner("Loading model and generating forecasts..."):
                         try:
@@ -184,6 +185,8 @@ def main():
                 st.markdown("---")
                 st.header("📈 Forecast Results")
 
+                forecast = st.session_state.last_forecast
+
                 # Download forecast JSON
                 forecast_json = json.dumps(
                     st.session_state.last_forecast, indent=2, default=str
@@ -194,6 +197,123 @@ def main():
                     file_name=f"forecast_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
                     mime="application/json",
                 )
+
+
+                materials = list(forecast["original_data"]["materials"].keys())
+                timestamps = forecast["original_data"]["timestamps"]
+                forecast_dates = forecast["metadata"]["forecast_dates"]
+
+                # =========================
+                # FILTERS
+                # =========================
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    selected_materials = st.multiselect(
+                        "Select materials",
+                        options=materials,
+                        default=materials
+                    )
+
+                with col2:
+                    show_history = st.checkbox("Include historical data", value=True)
+
+                # =========================
+                # QUANTILE CONTROL (NEW FLEXIBLE FILTER)
+                # =========================
+                st.subheader("📊 Forecast Components")
+
+                show_point = st.checkbox("Show forecast (point)", value=True)
+
+                # collect all available quantiles dynamically
+                quant_dict = forecast["forecasts"][materials[0]]["quantiles"]
+
+                # separate mean from quantiles
+                mean_key = "mean" if "mean" in quant_dict else None
+
+                quantile_keys = [
+                    k for k in quant_dict.keys()
+                    if k.startswith("q") and k[1:].isdigit()
+                ]
+
+                quantile_keys = sorted(quantile_keys, key=lambda x: int(x[1:]))
+
+                show_mean = st.checkbox("Show mean forecast", value=True)
+
+                selected_quantiles = st.multiselect(
+                    "Select quantiles (q10–q90)",
+                    options=quantile_keys,
+                    default=[]
+                )
+
+                # =========================
+                # PLOT
+                # =========================
+                fig = go.Figure()
+
+                for material in selected_materials:
+
+                    history = forecast["original_data"]["materials"][material]
+                    pred = forecast["forecasts"][material]
+
+                    # -------------------------
+                    # HISTORICAL
+                    # -------------------------
+                    if show_history:
+                        fig.add_trace(go.Scatter(
+                            x=timestamps,
+                            y=history,
+                            mode="lines",
+                            name=f"{material} (history)"
+                        ))
+
+                    # -------------------------
+                    # FORECAST (POINT - ALWAYS AVAILABLE)
+                    # -------------------------
+                    if show_point:
+                        fig.add_trace(go.Scatter(
+                            x=forecast_dates,
+                            y=pred["point"],
+                            mode="lines",
+                            line=dict(dash="dash"),
+                            name=f"{material} (forecast)"
+                        ))
+
+                    # -------------------------
+                    # MEAN
+                    # -------------------------
+                    if show_mean and "mean" in pred["quantiles"]:
+                        fig.add_trace(go.Scatter(
+                            x=forecast_dates,
+                            y=pred["quantiles"]["mean"],
+                            mode="lines",
+                            line=dict(dash="dash"),
+                            name=f"{material} (mean)"
+                        ))
+
+                    # -------------------------
+                    # QUANTILES
+                    # -------------------------
+                    for q in selected_quantiles:
+                        fig.add_trace(go.Scatter(
+                            x=forecast_dates,
+                            y=pred["quantiles"][q],
+                            mode="lines",
+                            name=f"{material} ({q})"
+                        ))
+
+                # =========================
+                # LAYOUT
+                # =========================
+                fig.update_layout(
+                    title="Forecast: Historical + Prediction (Multi-Material)",
+                    xaxis_title="Time",
+                    yaxis_title="Value",
+                    height=650,
+                    hovermode="x unified"
+                )
+
+                st.plotly_chart(fig, use_container_width=True)
 
                 # Display summary
                 with st.expander("📊 Forecast Summary"):

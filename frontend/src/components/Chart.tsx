@@ -1,7 +1,7 @@
 /**
  * Chart component for displaying forecast data using Plotly
  */
-
+console.log("Chart mounted", forecastData);
 import React, { useMemo } from "react";
 import Plot from "react-plotly.js";
 import { ForecastResponse } from "../types";

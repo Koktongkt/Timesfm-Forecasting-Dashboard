@@ -11,3 +11,4 @@ LICENSE
 AGENTS.md
 *.egg-info/
 wandb/
+frontend/
