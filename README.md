@@ -54,7 +54,7 @@ quantile_forecast.shape  # (2, 12, 10): mean, then 10th to 90th quantiles.
 ```
 # Streamlit app guide
 
-Refer to Quick Start on how to use the app
+Refer to Quick Start on how to use the app. For prototype development, streamlit used. But for actual production, React and FastAPI is a better combination.
 
 # Roadmap
 
